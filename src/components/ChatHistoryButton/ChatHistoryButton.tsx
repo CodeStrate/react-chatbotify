@@ -26,6 +26,7 @@ const ChatHistoryButton = () => {
 	const chatHistoryButtonHoveredStyle: React.CSSProperties = {
 		color: settings.general?.primaryColor,
 		borderColor: settings.general?.primaryColor,
+		...styles.chatHistoryButtonStyle, // by default inherit the base style
 		...styles.chatHistoryButtonHoveredStyle
 	};
 
@@ -54,6 +55,8 @@ const ChatHistoryButton = () => {
 					showChatHistory();
 				}}
 				className="rcb-view-history-button"
+				role="button"
+				tabIndex={0} 
 			>
 				<p>
 					{settings.chatHistory?.viewChatHistoryButtonText}

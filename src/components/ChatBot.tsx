@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 import ChatBotContainer from "./ChatBotContainer";
 import ChatBotLoader from "./ChatBotLoader";
@@ -9,8 +9,6 @@ import { Styles } from "../types/Styles";
 import { Flow } from "../types/Flow";
 import { Theme } from "../types/Theme";
 import { Plugin } from "../types/Plugin";
-import { DefaultSettings } from "../constants/internal/DefaultSettings";
-import { DefaultStyles } from "../constants/internal/DefaultStyles";
 import { WelcomeFlow } from "../constants/internal/WelcomeFlow";
 
 /**
@@ -24,10 +22,10 @@ import { WelcomeFlow } from "../constants/internal/WelcomeFlow";
  * @param plugins plugins to initialize
  */
 const ChatBot = ({
-	id = generateSecureUUID(),
-	flow = WelcomeFlow,
-	settings = DefaultSettings,
-	styles = DefaultStyles,
+	id,
+	flow,
+	settings,
+	styles,
 	themes = [],
 	plugins = []
 }: {
@@ -38,20 +36,12 @@ const ChatBot = ({
 	themes?: Theme | Array<Theme>;
 	plugins?: Array<Plugin>;
 }) => {
-	// handles case where flow is empty
-	if (Object.keys(flow).length === 0) {
-		flow = WelcomeFlow;
-	}
 
-	// handles case where settings is empty
-	if (Object.keys(settings).length === 0) {
-		settings = DefaultSettings;
-	}
-
-	// handles case where styles is empty
-	if (Object.keys(styles).length === 0) {
-		styles = DefaultStyles;
-	}
+	// handles cases where any props are empty
+	const finalBotId = useMemo(() => id || "rcb-" + generateSecureUUID(), []);
+	const finalFlow = (!flow || Object.keys(flow).length === 0) ? WelcomeFlow : flow;
+	const finalSettings = !settings ? {} : settings;
+	const finalStyles = !styles ? {} : styles;
 
 	// handles loading of chatbot only when config is loaded
 	const [configLoaded, setConfigLoaded] = useState<boolean>(false);
@@ -67,8 +57,8 @@ const ChatBot = ({
 	 */
 	const renderChatBot = () => (
 		<>
-			<ChatBotLoader styleRootRef={styleRootRef} id={id} flow={flow} settings={settings}
-				styles={styles} themes={themes} plugins={plugins} setConfigLoaded={setConfigLoaded}
+			<ChatBotLoader styleRootRef={styleRootRef} id={finalBotId} flow={finalFlow} settings={finalSettings}
+				styles={finalStyles} themes={themes} plugins={plugins} setConfigLoaded={setConfigLoaded}
 			/>
 			{configLoaded && <ChatBotContainer plugins={plugins} />}
 		</>
@@ -78,12 +68,12 @@ const ChatBot = ({
 		chatBotContext == null ? ( 
 			<ChatBotProvider>
 				<style ref={styleRootRef}/>
-				<div id={id}>{renderChatBot()}</div>
+				<div id={finalBotId}>{renderChatBot()}</div>
 			</ChatBotProvider>
 		) : (
 			<>
 				<style ref={styleRootRef}/>
-				<div id={id}>{renderChatBot()}</div>
+				<div id={finalBotId}>{renderChatBot()}</div>
 			</>
 		)
 	)

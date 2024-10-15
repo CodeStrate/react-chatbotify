@@ -66,12 +66,15 @@ const VoiceButton = () => {
 	// styles for voice icon
 	const voiceIconStyle: React.CSSProperties = {
 		backgroundImage: `url(${settings.voice?.icon})`,
+		fill: "#9aa0a6",
 		...styles.voiceIconStyle
 	};
 
 	// styles for voice disabled icon
 	const voiceIconDisabledStyle: React.CSSProperties = {
-		backgroundImage: `url(${settings.voice?.icon})`,
+		backgroundImage: `url(${settings.voice?.iconDisabled})`,
+		fill: "#9aa0a6",
+		...styles.voiceIconStyle, // by default inherit the base style
 		...styles.voiceIconDisabledStyle
 	};
 
@@ -98,6 +101,27 @@ const VoiceButton = () => {
 			fileUrl={fileDetails.fileUrl}/>, "user");
 	}
 
+	/**
+	 * Renders button depending on whether an svg component or image url is provided.
+	 */
+	const renderButton = () => {
+		const IconComponent = voiceToggledOn ? settings.voice?.icon : settings.voice?.iconDisabled;
+		if (!IconComponent || typeof IconComponent === "string") {
+			return (
+				<span
+					className={`rcb-voice-icon${voiceToggledOn && !textAreaDisabled ? "-on" : ""}`}
+					style={voiceToggledOn && !textAreaDisabled ? voiceIconStyle : voiceIconDisabledStyle}
+				/>
+			)
+		}
+		return (
+			IconComponent &&
+			<span className={`rcb-voice-icon ${voiceToggledOn && !textAreaDisabled ? "on" : ""}`}>
+				<IconComponent style={voiceToggledOn && !textAreaDisabled ? voiceIconStyle : voiceIconDisabledStyle}/>
+			</span>
+		)
+	}
+
 	return (
 		<div
 			aria-label={settings.ariaLabel?.voiceButton ?? "toggle voice"}
@@ -109,13 +133,13 @@ const VoiceButton = () => {
 				}
 				toggleVoice();
 			}}
-			style={voiceToggledOn && !textAreaDisabled ? styles.voiceButtonStyle : styles.voiceButtonDisabledStyle}
+			style={voiceToggledOn && !textAreaDisabled
+				? styles.voiceButtonStyle
+				: {...styles.voiceButtonStyle, ...styles.voiceButtonDisabledStyle}
+			}
 			className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-button-enabled" : "rcb-voice-button-disabled"}
 		>
-			<span
-				className={voiceToggledOn && !textAreaDisabled ? "rcb-voice-icon-on" : "rcb-voice-icon-off"}
-				style={voiceToggledOn && !textAreaDisabled ? voiceIconStyle : voiceIconDisabledStyle}
-			/>
+			{renderButton()}
 		</div>
 	);
 };

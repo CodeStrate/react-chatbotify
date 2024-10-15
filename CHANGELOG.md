@@ -1,5 +1,31 @@
 # CHANGELOG.md
 
+## v2.0.0-beta.18 (14-10-2024)
+
+**Fixed:**
+- Excluded comments from theme css files parsing
+- Fixed an issue where icon was not rendered correctly in footer
+
+## v2.0.0-beta.17 (13-10-2024)
+
+**Fixed:**
+- Fixed improper parsing of css files in themes
+- Fixed toast animation not working
+
+**Added:**
+- Updated button with svgs from: https://fonts.google.com/
+- Added disabled icon support for all buttons (now possible to have different icons for enabled/disabled state)
+- Added svg component support for button icons (conveniently use the `fill` attribute to recolor icons!)
+- Added a new `sendIconDisabledStyle`
+- Loading of chat history no longer locks the text area
+- Standardized keyframe naming conventions
+
+## v2.0.0-beta.16 (08-10-2024)
+
+**Fixed:**
+- Fixed an issue where themes may not load properly
+- Buttons now properly inherit base styles even in different states (e.g. disabled, hovered)
+
 ## v2.0.0-beta.15 (06-10-2024)
 
 **Fixed:**
