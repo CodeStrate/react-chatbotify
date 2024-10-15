@@ -2,6 +2,11 @@ import { useState } from "react";
 import ChatBot from "./components/ChatBot";
 import { Flow } from "./types/Flow";
 import { Params } from "./types/Params";
+import { Styles } from "./types/Styles";
+import { Settings } from "./types/Settings";
+import "./Omen.css";
+import OmenSendIcon from "./assets/omen-theme/send.svg";
+import OmenNotifyOn from "./assets/omen-theme/bell.svg";
 
 function App() {
 	const [name, setName] = useState("")
@@ -134,6 +139,85 @@ function App() {
 		},
 	}
 
+	const styles: Styles = {
+		headerStyle: {
+			backgroundImage: "none",
+			background: "#1a191c",
+			borderRadius: "0px",
+		},
+		bodyStyle: {
+			backgroundColor: "#131215",
+			margin: "0px",
+		},
+		chatInputContainerStyle: {
+			backgroundColor: "#131215",
+			padding: "15px 15px 20px 15px",
+		},
+
+		chatMessagePromptStyle: {
+			color: "#fafafa",
+		},
+		chatHistoryButtonStyle: {
+			background: "none",
+			color: "#fafafa",
+			borderColor: "#fafafa",
+		},
+
+		sendButtonStyle: {
+			backgroundColor: "#fafafa",
+			width: "55px",
+			height: "40px",
+			borderRadius: "12px",
+		},
+
+
+		chatInputAreaFocusedStyle: {
+			color: "#fafafa",	
+		},
+
+		sendButtonHoveredStyle: {
+			backgroundColor: "#1a191c",
+			width: "55px",
+			height: "40px",
+			borderRadius: "12px",
+		},
+
+		sendIconStyle: {
+			color: "red",
+		},
+
+		chatInputAreaStyle: {
+			backgroundColor: "#28272a",
+			borderRadius: "14px",
+			padding: "1px",
+		},
+
+		notificationIconDisabledStyle:{
+			color: "#a2a1a6",
+		},
+
+	}
+
+	const settings: Settings = {
+		general: {
+			primaryColor: "#131215",
+			secondaryColor: "#28272a",
+			showFooter: false
+		},
+		audio: {disabled: true},
+		chatInput: {
+			botDelay: 1000,
+			sendButtonIcon: OmenSendIcon,
+		},
+		userBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
+		botBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
+		voice: {disabled: true},
+		sensitiveInput: {asterisksCount: 6},
+		notification: {
+			icon: OmenNotifyOn,
+		},
+	}
+
 	return (
 		<div className="App">
 			<header className="App-header">
@@ -141,14 +225,8 @@ function App() {
 					<ChatBot
 						id="chatbot-id"
 						flow={flow}
-						settings={{
-							audio: {disabled: false},
-							chatInput: {botDelay: 1000},
-							userBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
-							botBubble: {showAvatar: true, dangerouslySetInnerHtml: true},
-							voice: {disabled: false},
-							sensitiveInput: {asterisksCount: 6},
-						}}
+						settings={settings}
+						styles={styles}
 					></ChatBot>
 				</div>
 			</header>
